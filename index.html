@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-   <meta name="google-site-verification" content="U9ioJ4pGHMa2GJQCjDD9nOXzOUS3kmpr9HHqjuUQ2yA" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -1597,5 +1596,22 @@
         border: 0;
       }
     </style>
-  </body>
+  <!-- Supabase SDK Library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // Supabase Credentials
+  const SUPABASE_URL = 'https://zektvujptrvxgogjqtmz.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_suNVKYUevIwmn5iIDW1rWw_AoWZcYD_';
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Supabase Connection Check
+  async function loadProducts() {
+    const { data, error } = await supabase.from('products').select('*');
+    if (!error) console.log('Supabase Connected! Items:', data);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadProducts);
+</script>
+</body>
 </html>
