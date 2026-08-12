@@ -1600,20 +1600,40 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  // Supabase Credentials
+  // 1. Database Connection Credentials
   const SUPABASE_URL = 'https://zektvujptrvxgogjqtmz.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_suNVKYUevIwmn5iIDW1rWw_AoWZcYD_';
-  
-  // Renamed to supabaseClient to prevent global variable collision
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // Supabase Connection Check
+  // 2. Fetch & Inject Data into Live UI
   async function loadProducts() {
-    const { data, error } = await supabaseClient.from('products').select('*');
-    if (!error) {
-      console.log('Supabase Connected Successfully! Items:', data);
-    } else {
-      console.error('Connection error:', error);
+    const { data: products, error } = await supabaseClient.from('products').select('*');
+    
+    if (error) {
+      console.error('Error fetching Supabase products:', error);
+      return;
+    }
+
+    // Site ke products grid container ko capture karna
+    const container = document.querySelector('.products-grid') || document.querySelector('.grid');
+    
+    if (container && products.length > 0) {
+      // Dynamic HTML Cards Generation
+      container.innerHTML = products.map(item => `
+        <div class="product-card" data-id="${item.id}">
+          <div class="product-visual" style="background-color: ${item.visual_color || '#1e293b'}">
+            <span class="tag">${item.tag || ''}</span>
+            <div class="visual-title">${item.visual_label || item.name}</div>
+          </div>
+          <div class="product-details">
+            <span class="category">${item.category || ''}</span>
+            <h3>${item.name}</h3>
+            <p class="price">$${item.price}</p>
+          </div>
+        </div>
+      `).join('');
+      
+      console.log('UI successfully synced with Supabase Database!');
     }
   }
 
