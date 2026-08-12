@@ -1596,22 +1596,28 @@
         border: 0;
       }
     </style>
-  <!-- Supabase SDK Library -->
+<!-- Supabase SDK Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
   // Supabase Credentials
   const SUPABASE_URL = 'https://zektvujptrvxgogjqtmz.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_suNVKYUevIwmn5iIDW1rWw_AoWZcYD_';
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  
+  // Renamed to supabaseClient to prevent global variable collision
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // Supabase Connection Check
   async function loadProducts() {
-    const { data, error } = await supabase.from('products').select('*');
-    if (!error) console.log('Supabase Connected! Items:', data);
+    const { data, error } = await supabaseClient.from('products').select('*');
+    if (!error) {
+      console.log('Supabase Connected Successfully! Items:', data);
+    } else {
+      console.error('Connection error:', error);
+    }
   }
 
   document.addEventListener('DOMContentLoaded', loadProducts);
 </script>
-</body>
+  </body>
 </html>
