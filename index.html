@@ -1906,19 +1906,21 @@
         }
 
         const formData = new FormData(checkoutForm);
-        const totalAmountPkr = cart.reduce((sum, product) => sum + product.pricePkr, 0);
-       const payload = {
-    customer_name: `${String(formData.get("firstName") || "").trim()} ${String(formData.get("surname") || "").trim()}`.trim(),
-    phone: String(formData.get("phone") || "").trim(),
-    address: `${String(formData.get("deliveryAddress") || "").trim()}, ${String(formData.get("city") || "").trim()}`.trim(),
-    items: cart.map((product) => ({
-      product_id: product.id,
-      name: product.name,
-      category: product.category,
-      unit_price_pkr: product.pricePkr,
-      quantity: 1
-    }))
-  };
+const totalAmountPkr = cart.reduce((sum, product) => sum + product.pricePkr, 0);
+
+const payload = {
+  customer_name: `${String(formData.get("firstName") || "").trim()} ${String(formData.get("surname") || "").trim()}`.trim(),
+  phone: String(formData.get("phone") || "").trim(),
+  address: `${String(formData.get("deliveryAddress") || "").trim()}, ${String(formData.get("city") || "").trim()}`.trim(),
+  total_amount: totalAmountPkr,
+  items: cart.map((product) => ({
+    product_id: product.id,
+    name: product.name,
+    category: product.category,
+    price: product.pricePkr,
+    quantity: 1
+  }))
+};
 
         checkoutSubmit.disabled = true;
         checkoutSubmit.classList.add("is-loading");
