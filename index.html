@@ -1626,14 +1626,32 @@
        * Replace this array with a Supabase products query in a future phase.
        * Suggested table fields: id, name, category, price_pkr, tag, visualLabel, visualColor.
        */
-      const PRODUCTS = [
-        { id: "noor-kimono", name: "Noor Kimono", category: "Silk outerwear", pricePkr: 69440, tag: "New arrival", visualLabel: "Noor", visualColor: "#354d83" },
-        { id: "the-azra-set", name: "The Azra Set", category: "Evening separates", pricePkr: 88200, tag: "Signature", visualLabel: "Azra", visualColor: "#795b48" },
-        { id: "sahar-drape", name: "Sahar Drape", category: "Fluid tailoring", pricePkr: 52920, tag: "Limited", visualLabel: "Sahar", visualColor: "#7a6f58" },
-        { id: "layla-column", name: "Layla Column", category: "Occasion dressing", pricePkr: 77280, tag: "The edit", visualLabel: "Layla", visualColor: "#493a70" },
-        { id: "nur-scarf", name: "Nur Silk Scarf", category: "Finishing pieces", pricePkr: 23520, tag: "Essential", visualLabel: "Nur", visualColor: "#8d6648" },
-        { id: "zoya-vest", name: "Zoya Vest", category: "Textured layers", pricePkr: 59360, tag: "New arrival", visualLabel: "Zoya", visualColor: "#28536a" }
-      ];
+    // DYNAMIC SUPABASE PRODUCTS PIPELINE
+let PRODUCTS = [];
+
+async function fetchProductsFromSupabase() {
+  try {
+    const { data, error } = await supabase.from('products').select('*');
+    if (error) {
+      console.error("Supabase Fetch Error:", error);
+      return;
+    }
+    if (data && data.length > 0) {
+      PRODUCTS = data.map(item => ({
+        id: item.id,
+        name: item.name,
+        category: item.category || 'General',
+        pricePkr: Number(item.price) * 280, // USD to PKR conversion
+        tag: item.tag || 'New arrival',
+        visualLabel: item.visualLabel || item.name.split(' ')[0],
+        visualColor: item.visualColor || '#354d83'
+      }));
+      renderProducts(PRODUCTS);
+    }
+  } catch (err) {
+    console.error("Critical Fetch Failure:", err);
+  }
+}
 
       let cart = [];
       let toastTimer;
