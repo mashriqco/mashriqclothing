@@ -1976,19 +1976,54 @@ try {
         showToast(`Welcome to the light, ${email.value}.`);
         email.value = "";
       });
+// OPTIMIZED DYNAMIC SUPABASE FETCH & GSAP PIPELINE
+    let PRODUCTS = [];
 
-      // GSAP page-load hero choreography and ScrollTrigger product reveals.
-      if (typeof gsap !== "undefined") {
-        if (typeof ScrollTrigger !== "undefined") gsap.registerPlugin(ScrollTrigger);
-        const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-        heroTimeline
-          .from(".hero-line", { yPercent: 110, opacity: 0, duration: 1.1, stagger: 0.12, delay: 0.12 })
-          .from(".hero-kicker, .hero-description, .hero-reveal:not(.hero-art)", { y: 18, opacity: 0, duration: 0.65, stagger: 0.08 }, "-=0.5")
-          .from(".hero-art", { x: 34, opacity: 0, duration: 1 }, "-=0.7");
-        bindRevealAnimations();
+    async function fetchProductsFromSupabase() {
+      try {
+        const { data, error } = await supabase.from('products').select('*');
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          PRODUCTS = data.map(item => ({
+            id: item.id,
+            name: item.name,
+            category: item.category || 'General',
+            pricePkr: Number(item.price) * 280, // USD to PKR dynamic multiplier
+            tag: item.tag || 'New arrival',
+            visualLabel: item.visualLabel || item.name.split(' ')[0],
+            visualColor: item.visualColor || '#354d83'
+          }));
+
+          // 1. Render fresh DOM elements
+          renderProducts(PRODUCTS);
+
+          // 2. Re-bind GSAP ScrollTrigger to newly generated DOM nodes
+          if (typeof bindRevealAnimations === "function") {
+            setTimeout(() => bindRevealAnimations(), 50);
+          }
+        }
+      } catch (err) {
+        console.error("[SUPABASE CRITICAL ENGINE ERROR]:", err.message || err);
       }
-    </script>
-    <style>
+    }
+
+    // GSAP page-load hero choreography
+    if (typeof gsap !== "undefined") {
+      if (typeof ScrollTrigger !== "undefined") gsap.registerPlugin(ScrollTrigger);
+      const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+      heroTimeline
+        .from(".hero-line", { yPercent: 110, opacity: 0, duration: 1.1, stagger: 0.12, delay: 0.12 })
+        .from(".hero-kicker, .hero-description, .hero-reveal:not(.hero-art)", { y: 18, opacity: 0, duration: 0.65, stagger: 0.08 }, "-=0.5")
+        .from(".hero-art", { x: 34, opacity: 0, duration: 1 }, "-=0.7");
+    }
+
+    // INITIALIZATION TRIGGER
+    document.addEventListener("DOMContentLoaded", () => {
+      fetchProductsFromSupabase();
+    });
+  </script>
+       <style>
       .sr-only {
         position: absolute;
         width: 1px;
