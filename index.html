@@ -1954,10 +1954,23 @@ try {
       });
 // BULLETPROOF DYNAMIC SUPABASE FETCH PIPELINE
     // BULLETPROOF DYNAMIC SUPABASE FETCH PIPELINE
-PRODUCTS = [];
+// BULLETPROOF DYNAMIC SUPABASE FETCH PIPELINE
+    PRODUCTS = [];
+
     async function fetchProductsFromSupabase() {
       try {
-        const { data, error } = await supabase.from('products').select('*');
+        const SUPABASE_URL = "https://zektvujptrvxgogjqtmz.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_suNVKYUevIwmn5iIDW1rWw_AoWZcYD_";
+
+        // Fix: Properly initialize Supabase Client
+        if (!window.supabase || typeof window.supabase.createClient !== "function") {
+          console.error("[SUPABASE ERROR]: Supabase library loaded nahi hui!");
+          return;
+        }
+
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const { data, error } = await supabaseClient.from('products').select('*');
         
         if (error) {
           console.error("[SUPABASE ERROR]:", error);
@@ -1996,7 +2009,6 @@ PRODUCTS = [];
         console.error("[CRITICAL SYSTEM FETCH FAILURE]:", err);
       }
     }
-
     // GSAP page-load hero choreography
     if (typeof gsap !== "undefined") {
       if (typeof ScrollTrigger !== "undefined") gsap.registerPlugin(ScrollTrigger);
