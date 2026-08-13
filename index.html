@@ -1920,22 +1920,24 @@
         checkoutSubmit.disabled = true;
         checkoutSubmit.classList.add("is-loading");
         checkoutSubmit.textContent = "Saving your order";
+try {
+      const SUPABASE_URL = "https://zektvujptrvxgogjqtmz.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_suNVKYUevIwmn5iIDW1rWw_AoWZcYD_";
+      const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        try {
-          const response = await fetch("/api/orders", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          });
-          const result = await response.json().catch(() => ({}));
-          if (!response.ok) throw new Error(result.message || "We could not save your order.");
+      const { data, error } = await supabaseClient
+        .from("orders")
+        .insert([payload]);
+
+      if (error) throw error;
+        
 
           cart = [];
           renderCart();
           resetCheckoutForm();
           checkoutHasSubmitted = false;
           setDrawer(false);
-          showToast(result.message || "Order received. We’ll be in touch shortly.");
+          showToast("Order received. We’ll be in touch shortly.");
         } catch (error) {
           showToast(error instanceof Error ? error.message : "We could not save your order. Please try again.");
         } finally {
