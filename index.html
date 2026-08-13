@@ -1901,21 +1901,18 @@
 
         const formData = new FormData(checkoutForm);
         const totalAmountPkr = cart.reduce((sum, product) => sum + product.pricePkr, 0);
-        const payload = {
-          customer_name: `${String(formData.get("firstName") || "").trim()} ${String(formData.get("surname") || "").trim()}`.trim(),
-          phone: String(formData.get("phone") || "").trim(),
-          delivery_address: String(formData.get("deliveryAddress") || "").trim(),
-          city: String(formData.get("city") || "").trim(),
-          total_amount_pkr: totalAmountPkr,
-          currency: "PKR",
-          items: cart.map((product) => ({
-            product_id: product.id,
-            name: product.name,
-            category: product.category,
-            unit_price_pkr: product.pricePkr,
-            quantity: 1
-          }))
-        };
+       const payload = {
+    customer_name: `${String(formData.get("firstName") || "").trim()} ${String(formData.get("surname") || "").trim()}`.trim(),
+    phone: String(formData.get("phone") || "").trim(),
+    address: `${String(formData.get("deliveryAddress") || "").trim()}, ${String(formData.get("city") || "").trim()}`.trim(),
+    items: cart.map((product) => ({
+      product_id: product.id,
+      name: product.name,
+      category: product.category,
+      unit_price_pkr: product.pricePkr,
+      quantity: 1
+    }))
+  };
 
         checkoutSubmit.disabled = true;
         checkoutSubmit.classList.add("is-loading");
