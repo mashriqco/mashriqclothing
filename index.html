@@ -1596,29 +1596,20 @@
         border: 0;
       }
     </style>
-<!-- Supabase SDK Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  // 1. Database Connection Credentials
   const SUPABASE_URL = 'https://zektvujptrvxgogjqtmz.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_suNVKYUevIwmn5iIDW1rWw_AoWZcYD_';
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // 2. Fetch & Inject Data into Live UI
+  // Dynamic Product Load
   async function loadProducts() {
     const { data: products, error } = await supabaseClient.from('products').select('*');
-    
-    if (error) {
-      console.error('Error fetching Supabase products:', error);
-      return;
-    }
+    if (error) return console.error('Error:', error);
 
-    // Site ke products grid container ko capture karna
     const container = document.querySelector('.products-grid') || document.querySelector('.grid');
-    
     if (container && products.length > 0) {
-      // Dynamic HTML Cards Generation
       container.innerHTML = products.map(item => `
         <div class="product-card" data-id="${item.id}">
           <div class="product-visual" style="background-color: ${item.visual_color || '#1e293b'}">
@@ -1632,10 +1623,54 @@
           </div>
         </div>
       `).join('');
-      
-      console.log('UI successfully synced with Supabase Database!');
     }
   }
+
+  // Checkout Button Trigger Handler
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button, a, div');
+    if (btn && btn.innerText && btn.innerText.toUpperCase().includes('CONTINUE TO CHECKOUT')) {
+      e.preventDefault();
+      
+      // Customer Info Prompts
+      const name = prompt("Checkout: Enter your Full Name:");
+      if (!name) return;
+
+      const phone = prompt("Checkout: Enter your Phone Number:");
+      if (!phone) return;
+
+      const address = prompt("Checkout: Enter Delivery Address & City:");
+      if (!address) return;
+
+      // Extract Cart Data from Drawer UI
+      const cartItems = Array.from(document.querySelectorAll('.basket-item, .cart-item, [class*="basket"]')).map(el => ({
+        title: el.querySelector('h3, .title, strong')?.innerText || 'Product',
+        price: el.querySelector('.price, span')?.innerText || '0'
+      })).filter(i => i.title !== 'Product');
+
+      const totalText = document.querySelector('.subtotal-amount, .total, [class*="total"]')?.innerText || '0';
+      const totalAmount = parseFloat(totalText.replace(/[^0-9.]/g, '')) || 0;
+
+      // Direct Save to Supabase 'orders' Table
+      const { data, error } = await supabaseClient
+        .from('orders')
+        .insert([{
+          customer_name: name,
+          phone: phone,
+          address: address,
+          items: cartItems,
+          total_amount: totalAmount,
+          status: 'Pending'
+        }]);
+
+      if (error) {
+        alert('Order submission failed: ' + error.message);
+      } else {
+        alert('🎉 Order Placed Successfully! We will dispatch your items soon.');
+        location.reload();
+      }
+    }
+  });
 
   document.addEventListener('DOMContentLoaded', loadProducts);
 </script>
