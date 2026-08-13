@@ -1626,32 +1626,6 @@
        * Replace this array with a Supabase products query in a future phase.
        * Suggested table fields: id, name, category, price_pkr, tag, visualLabel, visualColor.
        */
-    // DYNAMIC SUPABASE PRODUCTS PIPELINE
-let PRODUCTS = [];
-
-async function fetchProductsFromSupabase() {
-  try {
-    const { data, error } = await supabase.from('products').select('*');
-    if (error) {
-      console.error("Supabase Fetch Error:", error);
-      return;
-    }
-    if (data && data.length > 0) {
-      PRODUCTS = data.map(item => ({
-        id: item.id,
-        name: item.name,
-        category: item.category || 'General',
-        pricePkr: Number(item.price) * 280, // USD to PKR conversion
-        tag: item.tag || 'New arrival',
-        visualLabel: item.visualLabel || item.name.split(' ')[0],
-        visualColor: item.visualColor || '#354d83'
-      }));
-      renderProducts(PRODUCTS);
-    }
-  } catch (err) {
-    console.error("Critical Fetch Failure:", err);
-  }
-}
 
       let cart = [];
       let toastTimer;
