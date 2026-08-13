@@ -885,8 +885,12 @@
         width: min(430px, 100%);
         padding: 30px;
         border-left: 1px solid rgba(245, 158, 11, 0.3);
-        background: var(--midnight-deep);
-        box-shadow: -20px 0 70px rgba(0, 0, 0, 0.35);
+        background: rgba(10, 15, 26, 0.75);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        box-shadow:
+          inset 10px 0 35px rgba(255, 255, 255, 0.025),
+          -20px 0 70px rgba(0, 0, 0, 0.35);
         transform: translateX(100%);
         transition: transform 480ms var(--ease);
       }
@@ -936,6 +940,181 @@
         flex: 1;
         overflow-y: auto;
         padding: 24px 0;
+      }
+
+      .drawer-view {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        flex-direction: column;
+      }
+
+      .checkout-view {
+        overflow-y: auto;
+        padding-top: 24px;
+      }
+
+      .checkout-intro {
+        margin: 0 0 20px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      .checkout-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .field {
+        min-width: 0;
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--cream);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+
+      .field label span {
+        color: var(--gold-light);
+      }
+
+      .field input,
+      .field textarea {
+        width: 100%;
+        min-height: 46px;
+        padding: 11px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 2px;
+        outline: none;
+        color: var(--cream);
+        background: rgba(255, 255, 255, 0.055);
+        font-size: 13px;
+        transition:
+          border-color 220ms ease,
+          box-shadow 220ms ease,
+          background 220ms ease;
+      }
+
+      .field textarea {
+        min-height: 82px;
+        resize: vertical;
+      }
+
+      .field input::placeholder,
+      .field textarea::placeholder {
+        color: #8792a6;
+      }
+
+      .field input:focus,
+      .field textarea:focus {
+        border-color: var(--blue-light);
+        background: rgba(37, 99, 235, 0.1);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+      }
+
+      .field.is-invalid input,
+      .field.is-invalid textarea {
+        border-color: #fb7185;
+        box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.13);
+      }
+
+      .field-error {
+        display: block;
+        min-height: 16px;
+        padding-top: 4px;
+        color: #fda4af;
+        font-size: 10px;
+        line-height: 1.4;
+      }
+
+      .checkout-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 4px;
+        padding: 15px 0;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 11px;
+        text-transform: uppercase;
+      }
+
+      .checkout-summary strong {
+        color: var(--gold-light);
+        font-family: var(--serif);
+        font-size: 23px;
+        font-weight: 500;
+        text-transform: none;
+      }
+
+      .checkout-submit {
+        display: flex;
+        width: 100%;
+        min-height: 50px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid var(--blue-light);
+        color: white;
+        background: var(--blue);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        transition: background 200ms ease, box-shadow 200ms ease, opacity 200ms ease;
+      }
+
+      .checkout-submit:hover:not(:disabled) {
+        background: #1d4ed8;
+        box-shadow: 0 0 28px rgba(37, 99, 235, 0.4);
+      }
+
+      .checkout-submit:disabled {
+        cursor: wait;
+        opacity: 0.72;
+      }
+
+      .checkout-submit.is-loading::after {
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        border-top-color: white;
+        border-radius: 50%;
+        content: "";
+        animation: spin 700ms linear infinite;
+      }
+
+      .back-to-basket {
+        align-self: flex-start;
+        margin-top: 16px;
+        padding: 8px 0;
+        border: 0;
+        color: var(--muted);
+        background: transparent;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        transition: color 200ms ease;
+      }
+
+      .back-to-basket:hover {
+        color: var(--gold-light);
       }
 
       .cart-empty {
@@ -1040,7 +1219,12 @@
         padding: 13px 18px;
         border-left: 2px solid var(--gold);
         color: var(--cream);
-        background: #16223a;
+        background: rgba(10, 15, 26, 0.84);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         font-size: 11px;
         opacity: 0;
@@ -1057,6 +1241,14 @@
       @keyframes drop-in {
         from { opacity: 0; transform: translateY(-7px); }
         to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      [hidden] {
+        display: none !important;
       }
 
       @media (max-width: 800px) {
@@ -1190,6 +1382,10 @@
         .product-grid {
           grid-template-columns: 1fr;
           gap: 42px;
+        }
+
+        .field-row {
+          grid-template-columns: 1fr;
         }
 
         .product-visual {
@@ -1353,17 +1549,63 @@
     <aside class="cart-drawer" id="cart-drawer" aria-labelledby="cart-title" aria-hidden="true">
       <div class="drawer-head">
         <div>
-          <p class="eyebrow">Your edit</p>
+          <p class="eyebrow" id="drawer-kicker">Your edit</p>
           <h2 id="cart-title">The basket</h2>
         </div>
         <button class="close-button" id="cart-close" type="button" aria-label="Close shopping cart">×</button>
       </div>
-      <div class="cart-items" id="cart-items">
-        <p class="cart-empty">Your basket is waiting.</p>
+
+      <div class="drawer-view" id="basket-view">
+        <div class="cart-items" id="cart-items">
+          <p class="cart-empty">Your basket is waiting.</p>
+        </div>
+        <div class="drawer-foot">
+          <div class="total-row"><span>Subtotal</span><strong id="cart-total">Rs. 0</strong></div>
+          <button class="checkout-button" id="checkout-button" type="button">Continue to checkout</button>
+        </div>
       </div>
-      <div class="drawer-foot">
-        <div class="total-row"><span>Subtotal</span><strong id="cart-total">$0.00</strong></div>
-        <button class="checkout-button" id="checkout-button" type="button">Continue to checkout</button>
+
+      <div class="drawer-view checkout-view" id="checkout-view" hidden>
+        <p class="checkout-intro">A few details, then we’ll begin preparing your Mashriq edit.</p>
+        <form class="checkout-form" id="checkout-form" novalidate>
+          <div class="field-row">
+            <div class="field" data-field="firstName">
+              <label for="first-name">First name <span>*</span></label>
+              <input id="first-name" name="firstName" type="text" autocomplete="given-name" placeholder="Your first name" required />
+              <span class="field-error" id="first-name-error" aria-live="polite"></span>
+            </div>
+            <div class="field" data-field="surname">
+              <label for="surname">Surname</label>
+              <input id="surname" name="surname" type="text" autocomplete="family-name" placeholder="Optional" />
+              <span class="field-error" id="surname-error" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="field" data-field="phone">
+            <label for="phone">Phone number <span>*</span></label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="03001234567 or +923001234567" required />
+            <span class="field-error" id="phone-error" aria-live="polite"></span>
+          </div>
+
+          <div class="field" data-field="deliveryAddress">
+            <label for="delivery-address">Delivery address <span>*</span></label>
+            <textarea id="delivery-address" name="deliveryAddress" autocomplete="street-address" placeholder="House, street, area"></textarea>
+            <span class="field-error" id="delivery-address-error" aria-live="polite"></span>
+          </div>
+
+          <div class="field" data-field="city">
+            <label for="city">City <span>*</span></label>
+            <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="Lahore, Karachi, Islamabad..." required />
+            <span class="field-error" id="city-error" aria-live="polite"></span>
+          </div>
+
+          <div class="checkout-summary">
+            <span>Order total</span>
+            <strong id="checkout-total">Rs. 0</strong>
+          </div>
+          <button class="checkout-submit" id="checkout-submit" type="submit">Place order</button>
+          <button class="back-to-basket" id="back-to-basket" type="button">← Back to basket</button>
+        </form>
       </div>
     </aside>
 
@@ -1375,31 +1617,39 @@
     <script>
       /*
        * MASHRIQ PRODUCT DATA
-       * Replace this array with a Supabase query in a future phase.
-       * Suggested table fields: id, name, category, price, tag, visualLabel, visualColor.
+       * Replace this array with a Supabase products query in a future phase.
+       * Suggested table fields: id, name, category, price_pkr, tag, visualLabel, visualColor.
        */
       const PRODUCTS = [
-        { id: "noor-kimono", name: "Noor Kimono", category: "Silk outerwear", price: 248, tag: "New arrival", visualLabel: "Noor", visualColor: "#354d83" },
-        { id: "the-azra-set", name: "The Azra Set", category: "Evening separates", price: 315, tag: "Signature", visualLabel: "Azra", visualColor: "#795b48" },
-        { id: "sahar-drape", name: "Sahar Drape", category: "Fluid tailoring", price: 189, tag: "Limited", visualLabel: "Sahar", visualColor: "#7a6f58" },
-        { id: "layla-column", name: "Layla Column", category: "Occasion dressing", price: 276, tag: "The edit", visualLabel: "Layla", visualColor: "#493a70" },
-        { id: "nur-scarf", name: "Nur Silk Scarf", category: "Finishing pieces", price: 84, tag: "Essential", visualLabel: "Nur", visualColor: "#8d6648" },
-        { id: "zoya-vest", name: "Zoya Vest", category: "Textured layers", price: 212, tag: "New arrival", visualLabel: "Zoya", visualColor: "#28536a" }
+        { id: "noor-kimono", name: "Noor Kimono", category: "Silk outerwear", pricePkr: 69440, tag: "New arrival", visualLabel: "Noor", visualColor: "#354d83" },
+        { id: "the-azra-set", name: "The Azra Set", category: "Evening separates", pricePkr: 88200, tag: "Signature", visualLabel: "Azra", visualColor: "#795b48" },
+        { id: "sahar-drape", name: "Sahar Drape", category: "Fluid tailoring", pricePkr: 52920, tag: "Limited", visualLabel: "Sahar", visualColor: "#7a6f58" },
+        { id: "layla-column", name: "Layla Column", category: "Occasion dressing", pricePkr: 77280, tag: "The edit", visualLabel: "Layla", visualColor: "#493a70" },
+        { id: "nur-scarf", name: "Nur Silk Scarf", category: "Finishing pieces", pricePkr: 23520, tag: "Essential", visualLabel: "Nur", visualColor: "#8d6648" },
+        { id: "zoya-vest", name: "Zoya Vest", category: "Textured layers", pricePkr: 59360, tag: "New arrival", visualLabel: "Zoya", visualColor: "#28536a" }
       ];
 
-      // Future data layer boundary: async function loadProducts() { return supabase.from("products").select("*"); }
       let cart = [];
       let toastTimer;
+      let checkoutHasSubmitted = false;
 
-      const money = (value) => `$${value.toFixed(2)}`;
+      const money = (value) => `Rs. ${Math.round(value).toLocaleString("en-PK")}`;
       const productGrid = document.getElementById("product-grid");
       const emptyResults = document.getElementById("empty-results");
       const cartCount = document.getElementById("cart-count");
       const cartItems = document.getElementById("cart-items");
       const cartTotal = document.getElementById("cart-total");
+      const checkoutTotal = document.getElementById("checkout-total");
       const drawer = document.getElementById("cart-drawer");
       const backdrop = document.getElementById("drawer-backdrop");
       const toast = document.getElementById("toast");
+      const basketView = document.getElementById("basket-view");
+      const checkoutView = document.getElementById("checkout-view");
+      const drawerKicker = document.getElementById("drawer-kicker");
+      const drawerTitle = document.getElementById("cart-title");
+      const checkoutForm = document.getElementById("checkout-form");
+      const checkoutSubmit = document.getElementById("checkout-submit");
+      const checkoutFields = ["firstName", "phone", "deliveryAddress", "city"];
 
       function arrowIcon() {
         return '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>';
@@ -1423,7 +1673,7 @@
                 <h3>${product.name}</h3>
                 <p>${product.category}</p>
               </div>
-              <span class="product-price">${money(product.price)}</span>
+              <span class="product-price">${money(product.pricePkr)}</span>
             </div>
             <button class="add-button" type="button" data-add="${product.id}">
               Add to basket ${arrowIcon()}
@@ -1443,6 +1693,7 @@
         if (!count) {
           cartItems.innerHTML = '<p class="cart-empty">Your basket is waiting.</p>';
           cartTotal.textContent = money(0);
+          checkoutTotal.textContent = money(0);
           return;
         }
 
@@ -1451,13 +1702,15 @@
             <div class="cart-item-visual" style="--card-color: ${product.visualColor}">${product.visualLabel}</div>
             <div>
               <h3>${product.name}</h3>
-              <p>${money(product.price)}</p>
+              <p>${money(product.pricePkr)}</p>
             </div>
             <button class="remove-item" type="button" data-remove="${product.id}" aria-label="Remove ${product.name}">Remove</button>
           </div>
         `).join("");
 
-        cartTotal.textContent = money(cart.reduce((sum, product) => sum + product.price, 0));
+        const total = cart.reduce((sum, product) => sum + product.pricePkr, 0);
+        cartTotal.textContent = money(total);
+        checkoutTotal.textContent = money(total);
       }
 
       function showToast(message) {
@@ -1467,6 +1720,26 @@
         toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2400);
       }
 
+      function showBasketView() {
+        basketView.hidden = false;
+        checkoutView.hidden = true;
+        drawerKicker.textContent = "Your edit";
+        drawerTitle.textContent = "The basket";
+      }
+
+      function showCheckoutView() {
+        if (!cart.length) {
+          showToast("Your basket is waiting.");
+          return;
+        }
+        basketView.hidden = true;
+        checkoutView.hidden = false;
+        drawerKicker.textContent = "Secure details";
+        drawerTitle.textContent = "Checkout";
+        checkoutTotal.textContent = money(cart.reduce((sum, product) => sum + product.pricePkr, 0));
+        document.getElementById("first-name").focus();
+      }
+
       function setDrawer(open) {
         drawer.classList.toggle("is-open", open);
         backdrop.classList.toggle("is-visible", open);
@@ -1474,6 +1747,52 @@
         drawer.setAttribute("aria-hidden", String(!open));
         document.getElementById("cart-toggle").setAttribute("aria-expanded", String(open));
         if (open) document.getElementById("cart-close").focus();
+        if (!open) showBasketView();
+      }
+
+      function validatePhoneNumber(phone) {
+        const trimmed = phone.trim();
+        if (trimmed.startsWith("0")) return /^0\d{10}$/.test(trimmed);
+        if (trimmed.startsWith("+")) return /^\+\d{10,15}$/.test(trimmed);
+        return false;
+      }
+
+      function setFieldError(name, message) {
+        const field = checkoutForm.querySelector(`[data-field="${name}"]`);
+        const input = checkoutForm.elements[name];
+        const error = document.getElementById(`${name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}-error`);
+        if (!field || !input || !error) return;
+        field.classList.toggle("is-invalid", Boolean(message));
+        input.setAttribute("aria-invalid", String(Boolean(message)));
+        error.textContent = message;
+      }
+
+      function validateField(name) {
+        const value = checkoutForm.elements[name].value.trim();
+        let message = "";
+
+        if (name === "firstName" && !value) message = "First name is required.";
+        if (name === "phone") {
+          if (!value) message = "Phone number is required.";
+          else if (!validatePhoneNumber(value)) {
+            message = "Use 03001234567 or an international format such as +923001234567.";
+          }
+        }
+        if (name === "deliveryAddress" && !value) message = "Delivery address is required.";
+        if (name === "city" && !value) message = "City is required.";
+        setFieldError(name, message);
+        return !message;
+      }
+
+      function validateCheckoutForm() {
+        return checkoutFields.every(validateField);
+      }
+
+      function resetCheckoutForm() {
+        checkoutForm.reset();
+        [...checkoutForm.querySelectorAll(".field")].forEach((field) => field.classList.remove("is-invalid"));
+        [...checkoutForm.querySelectorAll(".field-error")].forEach((error) => { error.textContent = ""; });
+        [...checkoutForm.querySelectorAll("input, textarea")].forEach((input) => input.removeAttribute("aria-invalid"));
       }
 
       function bindRevealAnimations() {
@@ -1561,8 +1880,69 @@
         }
       });
 
-      document.getElementById("checkout-button").addEventListener("click", () => {
-        showToast(cart.length ? "Checkout will be connected in the next chapter." : "Your basket is waiting.");
+      document.getElementById("checkout-button").addEventListener("click", showCheckoutView);
+      document.getElementById("back-to-basket").addEventListener("click", showBasketView);
+
+      checkoutFields.forEach((name) => {
+        const input = checkoutForm.elements[name];
+        input.addEventListener("input", () => {
+          if (checkoutHasSubmitted || input.value.trim()) validateField(name);
+        });
+        input.addEventListener("blur", () => validateField(name));
+      });
+
+      checkoutForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        checkoutHasSubmitted = true;
+        if (!validateCheckoutForm() || !cart.length) {
+          if (!cart.length) showToast("Your basket is waiting.");
+          return;
+        }
+
+        const formData = new FormData(checkoutForm);
+        const totalAmountPkr = cart.reduce((sum, product) => sum + product.pricePkr, 0);
+        const payload = {
+          customer_name: `${String(formData.get("firstName") || "").trim()} ${String(formData.get("surname") || "").trim()}`.trim(),
+          phone: String(formData.get("phone") || "").trim(),
+          delivery_address: String(formData.get("deliveryAddress") || "").trim(),
+          city: String(formData.get("city") || "").trim(),
+          total_amount_pkr: totalAmountPkr,
+          currency: "PKR",
+          items: cart.map((product) => ({
+            product_id: product.id,
+            name: product.name,
+            category: product.category,
+            unit_price_pkr: product.pricePkr,
+            quantity: 1
+          }))
+        };
+
+        checkoutSubmit.disabled = true;
+        checkoutSubmit.classList.add("is-loading");
+        checkoutSubmit.textContent = "Saving your order";
+
+        try {
+          const response = await fetch("/api/orders", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(result.message || "We could not save your order.");
+
+          cart = [];
+          renderCart();
+          resetCheckoutForm();
+          checkoutHasSubmitted = false;
+          setDrawer(false);
+          showToast(result.message || "Order received. We’ll be in touch shortly.");
+        } catch (error) {
+          showToast(error instanceof Error ? error.message : "We could not save your order. Please try again.");
+        } finally {
+          checkoutSubmit.disabled = false;
+          checkoutSubmit.classList.remove("is-loading");
+          checkoutSubmit.textContent = "Place order";
+        }
       });
 
       document.getElementById("newsletter-form").addEventListener("submit", (event) => {
@@ -1596,83 +1976,5 @@
         border: 0;
       }
     </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  const SUPABASE_URL = 'https://zektvujptrvxgogjqtmz.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_suNVKYUevIwmn5iIDW1rWw_AoWZcYD_';
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  // Dynamic Product Load
-  async function loadProducts() {
-    const { data: products, error } = await supabaseClient.from('products').select('*');
-    if (error) return console.error('Error:', error);
-
-    const container = document.querySelector('.products-grid') || document.querySelector('.grid');
-    if (container && products.length > 0) {
-      container.innerHTML = products.map(item => `
-        <div class="product-card" data-id="${item.id}">
-          <div class="product-visual" style="background-color: ${item.visual_color || '#1e293b'}">
-            <span class="tag">${item.tag || ''}</span>
-            <div class="visual-title">${item.visual_label || item.name}</div>
-          </div>
-          <div class="product-details">
-            <span class="category">${item.category || ''}</span>
-            <h3>${item.name}</h3>
-            <p class="price">$${item.price}</p>
-          </div>
-        </div>
-      `).join('');
-    }
-  }
-
-  // Checkout Button Trigger Handler
-  document.addEventListener('click', async (e) => {
-    const btn = e.target.closest('button, a, div');
-    if (btn && btn.innerText && btn.innerText.toUpperCase().includes('CONTINUE TO CHECKOUT')) {
-      e.preventDefault();
-      
-      // Customer Info Prompts
-      const name = prompt("Checkout: Enter your Full Name:");
-      if (!name) return;
-
-      const phone = prompt("Checkout: Enter your Phone Number:");
-      if (!phone) return;
-
-      const address = prompt("Checkout: Enter Delivery Address & City:");
-      if (!address) return;
-
-      // Extract Cart Data from Drawer UI
-      const cartItems = Array.from(document.querySelectorAll('.basket-item, .cart-item, [class*="basket"]')).map(el => ({
-        title: el.querySelector('h3, .title, strong')?.innerText || 'Product',
-        price: el.querySelector('.price, span')?.innerText || '0'
-      })).filter(i => i.title !== 'Product');
-
-      const totalText = document.querySelector('.subtotal-amount, .total, [class*="total"]')?.innerText || '0';
-      const totalAmount = parseFloat(totalText.replace(/[^0-9.]/g, '')) || 0;
-
-      // Direct Save to Supabase 'orders' Table
-      const { data, error } = await supabaseClient
-        .from('orders')
-        .insert([{
-          customer_name: name,
-          phone: phone,
-          address: address,
-          items: cartItems,
-          total_amount: totalAmount,
-          status: 'Pending'
-        }]);
-
-      if (error) {
-        alert('Order submission failed: ' + error.message);
-      } else {
-        alert('🎉 Order Placed Successfully! We will dispatch your items soon.');
-        location.reload();
-      }
-    }
-  });
-
-  document.addEventListener('DOMContentLoaded', loadProducts);
-</script>
   </body>
 </html>
