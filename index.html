@@ -1976,35 +1976,48 @@ try {
         showToast(`Welcome to the light, ${email.value}.`);
         email.value = "";
       });
-// OPTIMIZED DYNAMIC SUPABASE FETCH & GSAP PIPELINE
+// BULLETPROOF DYNAMIC SUPABASE FETCH PIPELINE
     let PRODUCTS = [];
 
     async function fetchProductsFromSupabase() {
       try {
         const { data, error } = await supabase.from('products').select('*');
-        if (error) throw error;
+        
+        if (error) {
+          console.error("[SUPABASE ERROR]:", error);
+          return;
+        }
 
         if (data && data.length > 0) {
-          PRODUCTS = data.map(item => ({
-            id: item.id,
-            name: item.name,
-            category: item.category || 'General',
-            pricePkr: Number(item.price) * 280, // USD to PKR dynamic multiplier
-            tag: item.tag || 'New arrival',
-            visualLabel: item.visualLabel || item.name.split(' ')[0],
-            visualColor: item.visualColor || '#354d83'
-          }));
+          PRODUCTS = data.map(item => {
+            const rawPrice = Number(item.price) || 0;
+            const calculatedPkr = rawPrice > 1000 ? rawPrice : rawPrice * 280;
 
-          // 1. Render fresh DOM elements
-          renderProducts(PRODUCTS);
+            return {
+              id: item.id || `prod-${Math.random()}`,
+              name: item.name || 'Unnamed Product',
+              category: item.category || 'Collection',
+              pricePkr: calculatedPkr || 50000,
+              tag: item.tag || 'New Arrival',
+              visualLabel: item.visual_label || item.visualLabel || (item.name ? item.name.split(' ')[0] : 'Item'),
+              visualColor: item.visual_color || item.visualColor || '#354d83'
+            };
+          });
 
-          // 2. Re-bind GSAP ScrollTrigger to newly generated DOM nodes
-          if (typeof bindRevealAnimations === "function") {
-            setTimeout(() => bindRevealAnimations(), 50);
+          console.log("[SYSTEM AGENT]: Data fetched successfully ->", PRODUCTS);
+
+          if (typeof renderProducts === "function") {
+            renderProducts(PRODUCTS);
           }
+
+          if (typeof bindRevealAnimations === "function") {
+            setTimeout(() => bindRevealAnimations(), 100);
+          }
+        } else {
+          console.warn("[SYSTEM AGENT]: Supabase returned an empty array []. Check RLS policies.");
         }
       } catch (err) {
-        console.error("[SUPABASE CRITICAL ENGINE ERROR]:", err.message || err);
+        console.error("[CRITICAL SYSTEM FETCH FAILURE]:", err);
       }
     }
 
