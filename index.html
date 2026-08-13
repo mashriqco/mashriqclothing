@@ -15,7 +15,9 @@
     <meta name="description" content="Shop Mashriq for luxury clothing, modern heirlooms, and statement pieces. High-end design crafted for effortless elegance." />
     <meta name="theme-color" content="#0f172a" />
     <title>Mashriq</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Favicon tag (404 Error khatam karne ke liye) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Editorial type pairing: Playfair Display + Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1626,11 +1628,11 @@
        * Replace this array with a Supabase products query in a future phase.
        * Suggested table fields: id, name, category, price_pkr, tag, visualLabel, visualColor.
        */
-
+ /* Global Product & Cart States */
+      let PRODUCTS = [];
       let cart = [];
       let toastTimer;
       let checkoutHasSubmitted = false;
-
       const money = (value) => `Rs. ${Math.round(value).toLocaleString("en-PK")}`;
       const productGrid = document.getElementById("product-grid");
       const emptyResults = document.getElementById("empty-results");
@@ -1951,8 +1953,8 @@ try {
         email.value = "";
       });
 // BULLETPROOF DYNAMIC SUPABASE FETCH PIPELINE
-    let PRODUCTS = [];
-
+    // BULLETPROOF DYNAMIC SUPABASE FETCH PIPELINE
+PRODUCTS = [];
     async function fetchProductsFromSupabase() {
       try {
         const { data, error } = await supabase.from('products').select('*');
